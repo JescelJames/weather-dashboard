@@ -24,8 +24,8 @@ console.log(window);
     const city = cityInputEl.value.trim();
 
     if (city) {
-      // getWeather(city); // argument aka "baseball" passes (city) to getWeather function "glove"
-      getForecastWeather(city);
+      getWeather(city); // argument aka "baseball" passes (city) to getWeather function "glove"
+      getWeatherForecast(city);
       addCityButton(city);
             
       weatherContainerEl.textContent = "";
@@ -86,6 +86,9 @@ console.log(window);
         weatherContainerEl.appendChild(cityWind);
         weatherContainerEl.appendChild(cityHumidity);
 
+
+
+        
       });
   };
 
@@ -100,54 +103,60 @@ console.log(window);
 
 
 // API FORECAST WEATHER
-const getForecastWeather = function (city) {
-  const weatherApi = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
+const getWeatherForecast = function (city) {
+  const weatherForecastApi = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`;
 
-  citySearchTermEl.textContent = city.toUpperCase();
+  // citySearchTermEl.textContent = city.toUpperCase();
+  forecastContainerEl.textContent = "";
 
-  fetch(weatherApi)
+  fetch(weatherForecastApi)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
+      console.log('Weather Forecast Data: ',data);
 
       const weatherData = data;
 
+      for(let i = 0; i < weatherData.list.length; i += 8 ) {
+      
+
       // CREATE _______________________________________
-      // const cityDate = document.createElement("h5");
+      const cityDate = document.createElement("h6");
       const cityName = document.createElement("h6");
-      // const weatherMain = document.createElement("p");
-      // const weatherIcon = document.createElement("img");
-      // const cityTemp = document.createElement("p");
-      // const cityWind = document.createElement("p");
-      // const cityHumidity = document.createElement("p");
+      const weatherMain = document.createElement("p");
+      const weatherIcon = document.createElement("img");
+      const cityTemp = document.createElement("p");
+      const cityWind = document.createElement("p");
+      const cityHumidity = document.createElement("p");
 
       // BUILD ____________________________________________
-      // const unixDate = weatherData.dt; // unixDate api data date is in unix
-      // const date = new Date(unixDate * 1000); // convert date
-      // cityDate.textContent = date.toLocaleDateString(); // binds to local date string
+      const unixDate = weatherData.list[i].dt; // unixDate api data date is in unix
+      const date = new Date(unixDate * 1000); // convert date
+      cityDate.textContent = date.toLocaleDateString(); // binds to local date string
 
       cityName.textContent = weatherData.city.name;
-      // weatherMain.textContent = weatherData.weather[0].main;
+      weatherMain.textContent = weatherData.list[i].weather[0].main;
       // // Weather Icon
-      // const iconCode = weatherData.weather[0].icon; // https://openweathermap.org/weather-conditions#Icon-list
-      // const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
-      // weatherIcon.src = iconUrl;
-      // weatherIcon.classList.add("weather-icon"); //makes icon smaller
+      const iconCode = weatherData.list[i].weather[0].icon; // https://openweathermap.org/weather-conditions#Icon-list
+      const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+      weatherIcon.src = iconUrl;
+      weatherIcon.classList.add("weather-icon"); //makes icon smaller
 
-      // cityTemp.textContent = `Temp: ${weatherData.main.temp} F`;
-      // cityWind.textContent = `Wind: ${weatherData.wind.speed} MPH`;
-      // cityHumidity.textContent = `Humidity: ${weatherData.main.humidity} %`;
+      cityTemp.textContent = `Temp: ${weatherData.list[i].main.temp} F`;
+      cityWind.textContent = `Wind: ${weatherData.list[i].wind.speed} MPH`;
+      cityHumidity.textContent = `Humidity: ${weatherData.list[i].main.humidity} %`;
 
       // PLACE ___________________________________________
-      // weatherContainerEl.appendChild(cityDate);
+      forecastContainerEl.appendChild(cityDate);
       forecastContainerEl.appendChild(cityName);
-      // weatherContainerEl.appendChild(weatherMain);
-      // weatherContainerEl.appendChild(weatherIcon);
-      // weatherContainerEl.appendChild(cityTemp);
-      // weatherContainerEl.appendChild(cityWind);
-      // weatherContainerEl.appendChild(cityHumidity);
+      forecastContainerEl.appendChild(weatherMain);
+      forecastContainerEl.appendChild(weatherIcon);
+      forecastContainerEl.appendChild(cityTemp);
+      forecastContainerEl.appendChild(cityWind);
+      forecastContainerEl.appendChild(cityHumidity);
+
+      }
 
     });
 };
@@ -178,9 +187,11 @@ const getForecastWeather = function (city) {
       cityButton.addEventListener("click", function () {
         weatherContainerEl.textContent = "";
         getWeather(city);
+        getWeatherForecast(city);
       });
       
       saveCityToHistory(city)
+      
   
     }
   };
