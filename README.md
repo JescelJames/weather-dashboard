@@ -2,7 +2,7 @@
 
 ## Description
 
-Develop an application utilizing API from https://openweathermap.org to retrieve current day's weather forecast and the 5-day weather forecasts. 
+Develop an application utilizing API from https://openweathermap.org to retrieve current day's weather forecast and the 5-day weather forecasts. In addition, the app has the ability to store in searched cities in local storage.
 
 - My motivation: Understand how  Server Side API works
 - Why I took this challege: To solidify my understanding on fetching data from API
