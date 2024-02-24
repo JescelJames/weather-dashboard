@@ -17,10 +17,9 @@
 
     <main class="flex-row justify-space-between">
       <div class="col-12 col-md-4">
-        <div class="card" style="width: 18rem">
+        <div class="card" style="width: 24rem">
           <h3 class="card-header">Search for a City</h3>
           <form id="city-form" class="card-body">
-            <!-- <label class="form-label" for="username">Username</label> -->
             <input
               name="city-input"
               id="city-input"
@@ -29,7 +28,7 @@
               class="form-input"
             />
             <br />
-            <button type="submit" class="btn">Search</button>
+            <button type="submit" class="btn btn-secondary btn-sm">Search</button>
           </form>
         </div>
 
@@ -38,12 +37,13 @@
             <!-- history container of entry city input goes here -->
           </div>
         </div>
+
       </div>
 
       <div class="col-12 col-md-8">
-        <h2 class="subtitle">
+        <h4 class="subtitle">
           Weather Forecast for: <span id="city-searched"></span>
-        </h2>
+        </h4>
 
         <div id="weather-container">
           <!-- Today's weather data goes here  -->
