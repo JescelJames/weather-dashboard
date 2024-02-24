@@ -15,6 +15,13 @@ header {
 
 
 
+.forecast-item {
+  border: 2px solid #ddd; 
+  padding: 10px; 
+  margin-bottom: 10px; 
+  border-radius: 5px; 
+}
+
 
 .weather-icon {
   width: 40px;
