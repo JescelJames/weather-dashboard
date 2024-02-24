@@ -34,7 +34,7 @@
 
         <div>
           <h4> Searched History </h4>
-          <div id="history-container">
+          <div id="history-container" style="width: 24rem" class="flex-row">
             <!-- history container of entry city input goes here -->
           </div>
         </div>
@@ -43,16 +43,21 @@
 
       <div class="col-12 col-md-8">
         <h4 class="subtitle">
-          Weather Forecast for: <span id="city-searched"></span>
+           <span id="city-searched"></span>
         </h4>
 
         <div id="weather-container">
           <!-- Today's weather data goes here  -->
         </div>
 
-        <div class="col-12 col-sm-4" id="forecast-container">
-            <!--Forecast weather data goes here  -->
-        </div>
+        <h4> 
+          <span id="city-forecast"></span>
+        </h4>
+        <!-- <div class="row"> -->
+          <div class="col-12 col-sm-2 " id="forecast-container">
+              <!--Forecast weather data goes here  -->
+          </div>
+        <!-- </div> -->
         
       </div>
 

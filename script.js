@@ -4,6 +4,7 @@ const cityInputEl = document.querySelector("#city-input");
 const weatherContainerEl = document.querySelector("#weather-container");
 const forecastContainerEl = document.querySelector('#forecast-container');
 const citySearchTermEl = document.querySelector("#city-searched");
+const cityForecastTermEl = document.querySelector("#city-forecast");
 const historyContainerEl = document.querySelector("#history-container");
 
 // require('dotenv').config({ path: "./.env"});
@@ -11,8 +12,6 @@ const historyContainerEl = document.querySelector("#history-container");
 
 // DATA ____________________________________________________
 const apiKey = "860b77e2c61e7428da83b0fae8b02a9b";
-console.log(window);
-
 
 
 // HELPER FUNCTIONS _________________________________________
@@ -40,7 +39,7 @@ console.log(window);
   const getWeather = function (city) {
     const weatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
 
-    citySearchTermEl.textContent = city.toUpperCase();
+    citySearchTermEl.textContent = `City of ${city.toUpperCase()}`;
 
     fetch(weatherApi)
       .then(function (response) {
@@ -53,7 +52,7 @@ console.log(window);
 
         // CREATE _______________________________________
         const cityDate = document.createElement("h5");
-        const cityName = document.createElement("h6");
+        // const cityName = document.createElement("h6");
         const weatherMain = document.createElement("p");
         const weatherIcon = document.createElement("img");
         const cityTemp = document.createElement("p");
@@ -65,7 +64,7 @@ console.log(window);
         const date = new Date(unixDate * 1000); // convert date
         cityDate.textContent = date.toLocaleDateString(); // binds to local date string
 
-        cityName.textContent = weatherData.name;
+        // cityName.textContent = weatherData.name;
         weatherMain.textContent = weatherData.weather[0].main;
         // Weather Icon
         const iconCode = weatherData.weather[0].icon; // https://openweathermap.org/weather-conditions#Icon-list
@@ -79,27 +78,15 @@ console.log(window);
 
         // PLACE ___________________________________________
         weatherContainerEl.appendChild(cityDate);
-        weatherContainerEl.appendChild(cityName);
+        // weatherContainerEl.appendChild(cityName);
         weatherContainerEl.appendChild(weatherMain);
         weatherContainerEl.appendChild(weatherIcon);
         weatherContainerEl.appendChild(cityTemp);
         weatherContainerEl.appendChild(cityWind);
         weatherContainerEl.appendChild(cityHumidity);
 
-
-
-        
       });
   };
-
-
-
-
-
-
-
-
-
 
 
 // API FORECAST WEATHER
@@ -108,6 +95,8 @@ const getWeatherForecast = function (city) {
 
   // citySearchTermEl.textContent = city.toUpperCase();
   forecastContainerEl.textContent = "";
+
+  cityForecastTermEl.textContent = `5-Day Forecast `;
 
   fetch(weatherForecastApi)
     .then(function (response) {
@@ -118,57 +107,59 @@ const getWeatherForecast = function (city) {
 
       const weatherData = data;
 
-      for(let i = 0; i < weatherData.list.length; i += 8 ) {
+      // only grabs eighth item on the list
+      for(let i = 7; i < weatherData.list.length; i += 8 ) {
+
+         // Create a container for each forecast data set
+        const forecastContainer = document.createElement("div");
+        forecastContainer.classList.add("forecast-item");
       
 
-      // CREATE _______________________________________
-      const cityDate = document.createElement("h6");
-      const cityName = document.createElement("h6");
-      const weatherMain = document.createElement("p");
-      const weatherIcon = document.createElement("img");
-      const cityTemp = document.createElement("p");
-      const cityWind = document.createElement("p");
-      const cityHumidity = document.createElement("p");
+        // CREATE _______________________________________
+        const cityDate = document.createElement("h6");
+        // const cityName = document.createElement("h6");
+        const weatherMain = document.createElement("p");
+        const weatherIcon = document.createElement("img");
+        const cityTemp = document.createElement("p");
+        const cityWind = document.createElement("p");
+        const cityHumidity = document.createElement("p");
 
-      // BUILD ____________________________________________
-      const unixDate = weatherData.list[i].dt; // unixDate api data date is in unix
-      const date = new Date(unixDate * 1000); // convert date
-      cityDate.textContent = date.toLocaleDateString(); // binds to local date string
+        // BUILD ____________________________________________
+        const unixDate = weatherData.list[i].dt; // unixDate api data date is in unix
+        const date = new Date(unixDate * 1000); // convert date
+        cityDate.textContent = date.toLocaleDateString(); // binds to local date string
 
-      cityName.textContent = weatherData.city.name;
-      weatherMain.textContent = weatherData.list[i].weather[0].main;
-      // // Weather Icon
-      const iconCode = weatherData.list[i].weather[0].icon; // https://openweathermap.org/weather-conditions#Icon-list
-      const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
-      weatherIcon.src = iconUrl;
-      weatherIcon.classList.add("weather-icon"); //makes icon smaller
+        // cityName.textContent = weatherData.city.name;
+        weatherMain.textContent = weatherData.list[i].weather[0].main;
+        // // Weather Icon
+        const iconCode = weatherData.list[i].weather[0].icon; // https://openweathermap.org/weather-conditions#Icon-list
+        const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+        weatherIcon.src = iconUrl;
+        weatherIcon.classList.add("weather-icon"); //makes icon smaller
 
-      cityTemp.textContent = `Temp: ${weatherData.list[i].main.temp} F`;
-      cityWind.textContent = `Wind: ${weatherData.list[i].wind.speed} MPH`;
-      cityHumidity.textContent = `Humidity: ${weatherData.list[i].main.humidity} %`;
+        cityTemp.textContent = `Temp: ${weatherData.list[i].main.temp} F`;
+        cityWind.textContent = `Wind: ${weatherData.list[i].wind.speed} MPH`;
+        cityHumidity.textContent = `Humidity: ${weatherData.list[i].main.humidity} %`;
 
-      // PLACE ___________________________________________
-      forecastContainerEl.appendChild(cityDate);
-      forecastContainerEl.appendChild(cityName);
-      forecastContainerEl.appendChild(weatherMain);
-      forecastContainerEl.appendChild(weatherIcon);
-      forecastContainerEl.appendChild(cityTemp);
-      forecastContainerEl.appendChild(cityWind);
-      forecastContainerEl.appendChild(cityHumidity);
+        // PLACE ___________________________________________
+        forecastContainer.appendChild(cityDate);
+        // forecastContainerEl.appendChild(cityName);
+        forecastContainer.appendChild(weatherMain);
+        forecastContainer.appendChild(weatherIcon);
+        forecastContainer.appendChild(cityTemp);
+        forecastContainer.appendChild(cityWind);
+        forecastContainer.appendChild(cityHumidity);
 
+        forecastContainerEl.appendChild(forecastContainer);
       }
 
     });
 };
 
 
-
-
-
  // Searched History
   const addCityButton = function (city) {
-    // localStorage.setItem("city", JSON.stringify(city));
-    
+        
     // Check if the button already exists
     if (!document.querySelector(`[data-city='${city}']`)) {
       
@@ -183,7 +174,7 @@ const getWeatherForecast = function (city) {
       // PLACE 
       historyContainerEl.appendChild(cityButton); 
 
-      // click event listener to re-fetch weather
+      // click event listener to re-fetch weather data
       cityButton.addEventListener("click", function () {
         weatherContainerEl.textContent = "";
         getWeather(city);
@@ -197,7 +188,7 @@ const getWeatherForecast = function (city) {
   };
 
 
-
+ //Save History
   function saveCityToHistory(city) {
     let cities = JSON.parse(localStorage.getItem('citySearchHistory')) || [];
     if (!cities.includes(city)) {
@@ -206,6 +197,7 @@ const getWeatherForecast = function (city) {
     }
   }
   
+  //Load History
   function loadCityHistory() {
     const cities = JSON.parse(localStorage.getItem('citySearchHistory')) || [];
     cities.forEach(city => {
